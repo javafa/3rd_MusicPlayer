@@ -36,7 +36,6 @@ public class Music {
     public void loader(Context context) {
         // 데이터가 계속 싸이는 것을 방지한다.
         items.clear();
-
         ContentResolver resolver = context.getContentResolver();
 
         // 1. 테이블 명 정의 ?
@@ -80,6 +79,19 @@ public class Music {
 
         Uri musicUri;
         Uri albumArt;
+
+        @Override
+        public String toString() {
+            return id;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if(!(obj instanceof Item)){
+                return false;
+            }
+            return id.equals(obj.toString());
+        }
     }
 
     private Uri makeMusicUri(String musicId){
