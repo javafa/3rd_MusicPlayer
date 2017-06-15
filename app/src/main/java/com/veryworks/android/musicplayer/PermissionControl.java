@@ -47,11 +47,16 @@ public class PermissionControl {
 
     public static void onResult(Activity activity, int requestCode, @NonNull int[] grantResults){
         if(requestCode == REQ_FLAG){
+            boolean granted = true;
+            for(int grant : grantResults){
+                if(grant != PackageManager.PERMISSION_GRANTED){
+                    granted = false;
+                    break;
+                }
+            }
             // 3.1 사용자가 승인을 했음
-            if(grantResults[0] == PackageManager.PERMISSION_GRANTED
-                    && grantResults[1] == PackageManager.PERMISSION_GRANTED){
+            if(granted){
                 callInit(activity);
-                // 3.2 사용자가 거절 했음
             }else{
                 //activity.finish();
                 Toast.makeText(activity, "권한요청을 승인하셔야 앱을 사용할 수 있습니다.", Toast.LENGTH_SHORT).show();
