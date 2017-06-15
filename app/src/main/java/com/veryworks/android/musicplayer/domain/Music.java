@@ -62,6 +62,8 @@ public class Music {
                 items.add(item);
             }
         }
+        // 커서 꼭 닫을것...
+        cursor.close();
     }
 
     private String getValue(Cursor cursor, String name){
