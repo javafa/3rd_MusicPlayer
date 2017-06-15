@@ -15,7 +15,7 @@ import android.widget.Toast;
 public class PermissionControl {
     public static final int REQ_FLAG = 1000232412;
     private static String permissions[] = {
-            Manifest.permission.WRITE_EXTERNAL_STORAGE
+            Manifest.permission.READ_EXTERNAL_STORAGE
     };
 
     public static void checkVersion(Activity activity){
@@ -58,8 +58,8 @@ public class PermissionControl {
             if(granted){
                 callInit(activity);
             }else{
-                //activity.finish();
                 Toast.makeText(activity, "권한요청을 승인하셔야 앱을 사용할 수 있습니다.", Toast.LENGTH_SHORT).show();
+                //activity.finish();
             }
         }
     }

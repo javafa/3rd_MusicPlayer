@@ -10,6 +10,8 @@ import com.veryworks.android.musicplayer.ListFragment.OnListFragmentInteractionL
 import com.veryworks.android.musicplayer.domain.Music;
 import com.veryworks.android.musicplayer.dummy.DummyContent.DummyItem;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -18,21 +20,16 @@ import java.util.Set;
  * TODO: Replace the implementation with code for your data type.
  */
 public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
-
-
-    private final Set<Music.Item> mValues;
     private final OnListFragmentInteractionListener mListener;
 
     // 데이터 저장소
-    private final Music.Item datas[];
+    private final List<Music.Item> datas;
 
     public ListAdapter(Set<Music.Item> items, OnListFragmentInteractionListener listener) {
-        mValues = items;
         mListener = listener;
 
         // set에서 데이터 꺼내서 사용을 하는데 index를 필요로 하는겨우 array 에 담는다
-
-       datas = (Music.Item[]) mValues.toArray();
+        datas = new ArrayList<>(items);
     }
 
     @Override
@@ -45,7 +42,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         // datas 저장소에 들어가 있는 Music.Item 한개를 꺼낸다.
-        holder.mItem = datas[position];
+        holder.mItem = datas.get(position);
 
         holder.mIdView.setText(holder.mItem.id);
         holder.mContentView.setText(holder.mItem.title);
@@ -59,7 +56,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
 
     @Override
     public int getItemCount() {
-        return mValues.size();
+        return datas.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
