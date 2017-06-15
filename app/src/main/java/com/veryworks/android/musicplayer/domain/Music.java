@@ -34,8 +34,7 @@ public class Music {
 
     // 음악 데이터를 폰에서 꺼낸다음 List 저장소에 담아둔다.
     public void loader(Context context) {
-        // 데이터가 계속 싸이는 것을 방지한다.
-        items.clear();
+        // items.clear(); Set을 사용함으로 중복을 방지할 수 있다
         ContentResolver resolver = context.getContentResolver();
 
         // 1. 테이블 명 정의 ?
@@ -70,7 +69,7 @@ public class Music {
         return cursor.getString(index);
     }
 
-    // Set 이 정상적으로 중복값을 허용하지 안도록 어떤함수(?)를 오버라이드해서 구현하세요
+    // Set 이 중복값을 허용하지 않도록 equals 와 hashCode를 활용한다
     public class Item {
         String id;
         String albumId;
@@ -95,12 +94,6 @@ public class Music {
             return id.hashCode();
         }
     }
-
-    Item item1 = new Item();
-    Item item2 = null;
-
-    // Set.add(item1);    Set.add(item2);  >>>>>>   item1.equals(item2)
-
 
     private Uri makeMusicUri(String musicId){
         Uri contentUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
