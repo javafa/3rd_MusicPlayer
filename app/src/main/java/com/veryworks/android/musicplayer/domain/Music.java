@@ -81,18 +81,26 @@ public class Music {
         Uri albumArt;
 
         @Override
-        public String toString() {
-            return id;
+        public boolean equals(Object item) {
+            // null 체크
+            if(item == null) return false;
+            // 객체 타입 체크
+            if (!(item instanceof Item)) return false;
+            // 키값의 hashcode 비교
+            return id.hashCode() == item.hashCode();
         }
 
         @Override
-        public boolean equals(Object obj) {
-            if(!(obj instanceof Item)){
-                return false;
-            }
-            return id.equals(obj.toString());
+        public int hashCode() {
+            return id.hashCode();
         }
     }
+
+    Item item1 = new Item();
+    Item item2 = null;
+
+    // Set.add(item1);    Set.add(item2);  >>>>>>   item1.equals(item2)
+
 
     private Uri makeMusicUri(String musicId){
         Uri contentUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
