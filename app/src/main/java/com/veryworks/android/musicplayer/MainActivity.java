@@ -1,6 +1,7 @@
 package com.veryworks.android.musicplayer;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -10,7 +11,8 @@ import android.widget.FrameLayout;
 import com.veryworks.android.musicplayer.dummy.DummyContent;
 
 public class MainActivity extends AppCompatActivity
-        implements ItemFragment.OnListFragmentInteractionListener{
+        implements ListFragment.OnListFragmentInteractionListener
+                    , PermissionControl.CallBack{
 
     FrameLayout layout;
 
@@ -18,8 +20,21 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        PermissionControl.checkVersion(this);
+    }
+
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        PermissionControl.onResult(this, requestCode, grantResults);
+    }
+
+    @Override
+    public void init(){
         setViews();
-        setFragment(ItemFragment.newInstance(1)); // 목록 프래그먼트
+        setFragment(ListFragment.newInstance(1)); // 목록 프래그먼트
     }
 
     private void setViews(){

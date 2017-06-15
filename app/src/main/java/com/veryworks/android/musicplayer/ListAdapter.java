@@ -6,24 +6,33 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.veryworks.android.musicplayer.ItemFragment.OnListFragmentInteractionListener;
+import com.veryworks.android.musicplayer.ListFragment.OnListFragmentInteractionListener;
+import com.veryworks.android.musicplayer.domain.Music;
 import com.veryworks.android.musicplayer.dummy.DummyContent.DummyItem;
 
-import java.util.List;
+import java.util.Set;
 
 /**
  * {@link RecyclerView.Adapter} that can display a {@link DummyItem} and makes a call to the
  * specified {@link OnListFragmentInteractionListener}.
  * TODO: Replace the implementation with code for your data type.
  */
-public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecyclerViewAdapter.ViewHolder> {
+public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
 
-    private final List<DummyItem> mValues;
+
+    private final Set<Music.Item> mValues;
     private final OnListFragmentInteractionListener mListener;
 
-    public MyItemRecyclerViewAdapter(List<DummyItem> items, OnListFragmentInteractionListener listener) {
+    // 데이터 저장소
+    private final Music.Item datas[];
+
+    public ListAdapter(Set<Music.Item> items, OnListFragmentInteractionListener listener) {
         mValues = items;
         mListener = listener;
+
+        // set에서 데이터 꺼내서 사용을 하는데 index를 필요로 하는겨우 array 에 담는다
+
+       datas = (Music.Item[]) mValues.toArray();
     }
 
     @Override
@@ -35,18 +44,15 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.mItem = mValues.get(position);
-        holder.mIdView.setText(mValues.get(position).id);
-        holder.mContentView.setText(mValues.get(position).content);
+        // datas 저장소에 들어가 있는 Music.Item 한개를 꺼낸다.
+        holder.mItem = datas[position];
+
+        holder.mIdView.setText(holder.mItem.id);
+        holder.mContentView.setText(holder.mItem.title);
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (null != mListener) {
-                    // Notify the active callbacks interface (the activity, if the
-                    // fragment is attached to one) that an item has been selected.
-                    mListener.onListFragmentInteraction(holder.mItem);
-                }
             }
         });
     }
@@ -60,7 +66,7 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
         public final View mView;
         public final TextView mIdView;
         public final TextView mContentView;
-        public DummyItem mItem;
+        public Music.Item mItem;
 
         public ViewHolder(View view) {
             super(view);

@@ -21,7 +21,7 @@ public class Music {
         items = new HashSet<>();
     }
 
-    public Music getInstance(){
+    public static Music getInstance(){
         if(instance == null)
             instance = new Music();
 
@@ -71,13 +71,13 @@ public class Music {
 
     // Set 이 중복값을 허용하지 않도록 equals 와 hashCode를 활용한다
     public class Item {
-        String id;
-        String albumId;
-        String artist;
-        String title;
+        public String id;
+        public String albumId;
+        public String artist;
+        public String title;
 
-        Uri musicUri;
-        Uri albumArt;
+        public Uri musicUri;
+        public Uri albumArt;
 
         @Override
         public boolean equals(Object item) {
