@@ -42,10 +42,10 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         // datas 저장소에 들어가 있는 Music.Item 한개를 꺼낸다.
-        holder.mItem = datas.get(position);
+        //Music.Item item = datas.get(position);
 
-        holder.mIdView.setText(holder.mItem.id);
-        holder.mContentView.setText(holder.mItem.title);
+        holder.mIdView.setText(datas.get(position).id);
+        holder.mContentView.setText(datas.get(position).title);
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,7 +63,6 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
         public final View mView;
         public final TextView mIdView;
         public final TextView mContentView;
-        public Music.Item mItem;
 
         public ViewHolder(View view) {
             super(view);
