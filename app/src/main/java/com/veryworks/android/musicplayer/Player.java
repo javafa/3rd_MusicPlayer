@@ -35,4 +35,22 @@ public class Player {
         player.start();
         playerStatus = PLAY;
     }
+
+    // 음원의 길이
+    public static int getDuration(){
+        if(player != null){
+            return player.getDuration();
+        }else{
+            return 0;
+        }
+    }
+
+    // 현재 실행 구간
+    public static int getCurrent(){
+        if(player != null){
+            return player.getCurrentPosition();
+        }else{
+            return 0;
+        }
+    }
 }

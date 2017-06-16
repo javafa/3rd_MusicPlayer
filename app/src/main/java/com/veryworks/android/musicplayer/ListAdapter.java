@@ -15,9 +15,7 @@ import com.veryworks.android.musicplayer.ListFragment.OnListFragmentInteractionL
 import com.veryworks.android.musicplayer.domain.Music;
 import com.veryworks.android.musicplayer.dummy.DummyContent.DummyItem;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import jp.wasabeef.glide.transformations.CropCircleTransformation;
 
@@ -34,11 +32,11 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
     // 데이터 저장소
     private final List<Music.Item> datas;
 
-    public ListAdapter(Set<Music.Item> items, OnListFragmentInteractionListener listener) {
+    public ListAdapter(List<Music.Item> items, OnListFragmentInteractionListener listener) {
         mListener = listener;
 
         // set에서 데이터 꺼내서 사용을 하는데 index를 필요로 하는겨우 array 에 담는다
-        datas = new ArrayList<>(items);
+        datas = items;
     }
 
     @Override

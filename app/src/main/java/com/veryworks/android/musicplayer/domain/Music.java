@@ -6,7 +6,9 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -28,8 +30,8 @@ public class Music {
         return instance;
     }
 
-    public Set<Item> getItems(){
-        return items;
+    public List<Item> getItems(){
+        return new ArrayList(items);
     }
 
     // 음악 데이터를 폰에서 꺼낸다음 List 저장소에 담아둔다.
