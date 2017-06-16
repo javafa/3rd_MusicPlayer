@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.veryworks.android.musicplayer.domain.Music;
-import com.veryworks.android.musicplayer.dummy.DummyContent.DummyItem;
 
 public class ListFragment extends Fragment {
 
@@ -84,6 +83,6 @@ public class ListFragment extends Fragment {
 
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onListFragmentInteraction(DummyItem item);
+        void goDetailInteraction();
     }
 }

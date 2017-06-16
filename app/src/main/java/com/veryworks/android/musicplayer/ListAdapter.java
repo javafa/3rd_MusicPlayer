@@ -21,7 +21,6 @@ import java.util.Set;
 
 import jp.wasabeef.glide.transformations.CropCircleTransformation;
 
-import static com.veryworks.android.musicplayer.Player.playerStatus;
 
 /**
  * {@link RecyclerView.Adapter} that can display a {@link DummyItem} and makes a call to the
@@ -83,7 +82,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
     }
 
     public void goDetail(int position){
-
+        mListener.goDetailInteraction();
     }
 
     public void setItemClicked(int position){
@@ -125,10 +124,20 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
                 }
             });
 
+            // 상세보기로 이동 -> 뷰페이저로 이동
+            mView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    goDetail(position);
+                    return true; // 롱클릭 후 온클릭이 실행되지 않도록 한다.
+                }
+            });
+
+            // pause 버튼 클릭
             btnPause.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    switch(playerStatus){
+                    switch(Player.playerStatus){
                         case Player.PLAY:
                             Player.pause();
                             // pause 가 클릭되면 이미지 모양이 play 로 바뀐다.
@@ -139,15 +148,6 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
                             btnPause.setImageResource(android.R.drawable.ic_media_pause);
                             break;
                     }
-                }
-            });
-
-            // 상세보기로 이동 -> 뷰페이저로 이동
-            mView.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    goDetail(position);
-                    return true; // 롱클릭 후 온클릭이 실행되지 않도록 한다.
                 }
             });
         }

@@ -12,7 +12,7 @@ public class Player {
     public static final int STOP = 0;
     public static final int PLAY = 1;
     public static final int PAUSE = 2;
-    public static MediaPlayer player = null;
+    private static MediaPlayer player = null;
     public static int playerStatus = STOP;
 
     public static void play(Uri musicUri, Context context){
