@@ -81,6 +81,8 @@ public class Music {
         public Uri musicUri;
         public Uri albumArt;
 
+        public boolean itemClicked = false;
+
         @Override
         public boolean equals(Object item) {
             // null 체크
