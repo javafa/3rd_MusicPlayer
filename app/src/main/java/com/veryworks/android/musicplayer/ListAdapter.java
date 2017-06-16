@@ -82,7 +82,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
     }
 
     public void goDetail(int position){
-        mListener.goDetailInteraction();
+        mListener.goDetailInteraction(position);
     }
 
     public void setItemClicked(int position){

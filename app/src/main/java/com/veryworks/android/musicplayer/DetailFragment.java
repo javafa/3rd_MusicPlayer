@@ -16,14 +16,18 @@ import com.veryworks.android.musicplayer.domain.Music;
 import java.util.Set;
 
 public class DetailFragment extends Fragment {
+    static final String ARG1 = "position";
     ViewHolder viewHolder = null;
 
     public DetailFragment() {
         // Required empty public constructor
     }
 
-    public static DetailFragment newInstance() {
+    public static DetailFragment newInstance(int position) {
         DetailFragment fragment = new DetailFragment();
+        Bundle bundle = new Bundle();
+        bundle.putInt(ARG1,position);
+        fragment.setArguments(bundle);
         return fragment;
     }
 
@@ -31,7 +35,10 @@ public class DetailFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_pager, container, false);
-        viewHolder = new ViewHolder(view);
+        Bundle bundle = getArguments();
+        int position = bundle.getInt(ARG1);
+
+        viewHolder = new ViewHolder(view, position);
         return view;
     }
 
@@ -50,7 +57,7 @@ public class DetailFragment extends Fragment {
         SeekBar seekBar;
         TextView current,duration;
 
-        public ViewHolder(View view){
+        public ViewHolder(View view, int position){
             viewPager = (ViewPager) view.findViewById(R.id.viewPager);
             layoutController = (RelativeLayout) view.findViewById(R.id.layoutController);
             btnPlay = (ImageButton) view.findViewById(R.id.play);
@@ -60,7 +67,7 @@ public class DetailFragment extends Fragment {
             current = (TextView) view.findViewById(R.id.current);
             duration = (TextView) view.findViewById(R.id.duration);
             setOnClickListener();
-            setViewPager();
+            setViewPager(position);
         }
 
         private void setOnClickListener(){
@@ -69,9 +76,10 @@ public class DetailFragment extends Fragment {
             btnPrev.setOnClickListener(this);
         }
 
-        private void setViewPager(){
+        private void setViewPager(int position){
             DetailAdapter adapter = new DetailAdapter(getDatas());
             viewPager.setAdapter(adapter);
+            viewPager.setCurrentItem(position);
         }
 
         @Override

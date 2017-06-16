@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity
     // Fragment 를 통해 Adapter 까지 interface 를 전달하고
     // Adapter 에서 interface 를 직접호출해서 사용한다.
     @Override
-    public void goDetailInteraction() {
-        addFragment(DetailFragment.newInstance());
+    public void goDetailInteraction(int position) {
+        addFragment(DetailFragment.newInstance(position));
     }
 }
