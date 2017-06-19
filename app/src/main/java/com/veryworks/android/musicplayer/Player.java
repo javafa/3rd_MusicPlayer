@@ -15,13 +15,17 @@ public class Player {
     private static MediaPlayer player = null;
     public static int playerStatus = STOP;
 
-    public static void play(Uri musicUri, Context context){
-        // 1. 미디어 플레이어 사용하기
+    // 음원 세팅
+    public static void init(Uri musicUri, Context context) {
         if(player != null) {
             player.release();
         }
         player = MediaPlayer.create(context, musicUri);
         player.setLooping(false); // 반복여부
+    }
+
+    public static void play(){
+
         player.start();
         playerStatus = PLAY;
     }
@@ -53,4 +57,6 @@ public class Player {
             return 0;
         }
     }
+
+
 }

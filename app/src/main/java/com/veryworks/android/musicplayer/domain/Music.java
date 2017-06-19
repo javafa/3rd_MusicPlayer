@@ -17,6 +17,7 @@ import java.util.Set;
 
 public class Music {
     private static Music instance = null;
+    // 중복을 방지하기 위해 데이터 저장소의 형태를 Set 으로 설정
     private Set<Item> items = null;
 
     private Music() {
@@ -32,7 +33,8 @@ public class Music {
 
     public List<Item> getItems(){
         return new ArrayList(items);
-    }
+    } // 123 번지
+                                                                   // 700
 
     // 음악 데이터를 폰에서 꺼낸다음 List 저장소에 담아둔다.
     public void loader(Context context) {

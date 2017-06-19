@@ -1,6 +1,7 @@
 package com.veryworks.android.musicplayer;
 
 import android.support.v4.view.PagerAdapter;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,11 +45,15 @@ public class DetailAdapter extends PagerAdapter {
 
         textView.setText(datas.get(position).title);
 
+        Log.d("ViewPager","Container==========="+container);
+
         // 생성한 뷰를 뷰페이저 container에 담아준다
         container.addView(view);
 
         return view;
     }
+
+
 
     // 화면에서 사라진 뷰를 메모리에서 제거하는 역할
     @Override

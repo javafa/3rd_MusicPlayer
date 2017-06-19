@@ -14,11 +14,17 @@ public class MainActivity extends AppCompatActivity
 
     FrameLayout layout;
 
+    ListFragment list;
+    DetailFragment detail;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         PermissionControl.checkVersion(this);
+
+        list = ListFragment.newInstance(1);
+        detail = DetailFragment.newInstance(-1);
     }
 
 
@@ -58,6 +64,7 @@ public class MainActivity extends AppCompatActivity
     // Adapter 에서 interface 를 직접호출해서 사용한다.
     @Override
     public void goDetailInteraction(int position) {
-        addFragment(DetailFragment.newInstance(position));
+        detail.setPosition(position);
+        addFragment(detail);
     }
 }

@@ -57,7 +57,9 @@ public class ListFragment extends Fragment {
             Music music = Music.getInstance();
             music.loader(getContext());
 
-            ListAdapter adapter = new ListAdapter(music.getItems(), mListener);
+            ListAdapter adapter = new ListAdapter(mListener);
+            adapter.setDatas(music.getItems());
+
             recyclerView.setAdapter(adapter);
         }
         return view;

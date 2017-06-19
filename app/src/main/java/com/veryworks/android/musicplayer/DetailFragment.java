@@ -24,7 +24,7 @@ public class DetailFragment extends Fragment {
     static final String ARG1 = "position";
     private int position = -1;
 
-    ViewHolder viewHolder = null;
+    private ViewHolder viewHolder = null;
 
     Handler handler = new Handler(){
         @Override
@@ -41,22 +41,33 @@ public class DetailFragment extends Fragment {
         // Required empty public constructor
     }
 
+    public void setPosition(int position) {
+        this.position = position;
+    }
+
     public static DetailFragment newInstance(int position) {
         DetailFragment fragment = new DetailFragment();
-        Bundle bundle = new Bundle();
-        bundle.putInt(ARG1,position);
-        fragment.setArguments(bundle);
         return fragment;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_pager, container, false);
-        Bundle bundle = getArguments();
-        position = bundle.getInt(ARG1);
-        viewHolder = new ViewHolder(view, position);
+        View view = null;
+        Log.d("DetailFragment","viewHolder====================================="+viewHolder);
+        if(viewHolder == null) {
+            view = inflater.inflate(R.layout.fragment_pager, container, false);
+            viewHolder = new ViewHolder(view, this);
+        }else{
+            view = viewHolder.getView();
+        }
         return view;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        viewHolder.init(position);
     }
 
     public List<Music.Item> getDatas(){
@@ -66,15 +77,57 @@ public class DetailFragment extends Fragment {
         return music.getItems();
     }
 
+    // 최초에 호출될 경우는 페이지의 이동이 없으므로 호출되지 않는다.
+    ViewPager.OnPageChangeListener viewPagerListener = new ViewPager.OnPageChangeListener() {
+        @Override
+        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+        }
+
+        // 페이지의 변경사항을 체크해서 현재 페이지 값을 알려준다
+        @Override
+        public void onPageSelected(int position) {
+            // 현재 페이지가 변경된 후 호출된다.
+            // 플레이어에 음악을 세팅해준다.
+            musicInit(position);
+        }
+
+        @Override
+        public void onPageScrollStateChanged(int state) {
+
+        }
+    };
+
+    // 음악을 초기화해준다
+    public void musicInit(int position){
+        Uri musicUri = getDatas().get(position).musicUri;
+        Player.init(musicUri, getContext());
+
+        Log.d("DetailFragment","musicInit viewHolder====================================="+viewHolder);
+        int musicDuration = Player.getDuration();
+        viewHolder.setDuration(musicDuration);
+        viewHolder.seekBar.setMax(Player.getDuration());
+    }
+
     // ViewPager 의 View
     public class ViewHolder implements View.OnClickListener{
+        View view;
         ViewPager viewPager;
         RelativeLayout layoutController;
         ImageButton btnPlay,btnNext,btnPrev;
         SeekBar seekBar;
         TextView current,duration;
 
-        public ViewHolder(View view, int position){
+        // 프레젠터 역할 - 인터페이스 설계 필요
+        DetailFragment presenter;
+
+        public View getView(){
+            return view;
+        }
+
+        public ViewHolder(View view, DetailFragment presenter){
+            this.view = view;
+            this.presenter = presenter;
             viewPager = (ViewPager) view.findViewById(R.id.viewPager);
             layoutController = (RelativeLayout) view.findViewById(R.id.layoutController);
             btnPlay = (ImageButton) view.findViewById(R.id.play);
@@ -83,6 +136,9 @@ public class DetailFragment extends Fragment {
             seekBar = (SeekBar) view.findViewById(R.id.seekBar);
             current = (TextView) view.findViewById(R.id.current);
             duration = (TextView) view.findViewById(R.id.duration);
+        }
+
+        public void init(int position){
             setOnClickListener();
             setViewPager(position);
         }
@@ -95,23 +151,36 @@ public class DetailFragment extends Fragment {
 
         private void setViewPager(int position){
             DetailAdapter adapter = new DetailAdapter(getDatas());
+            // 아답터를 생성
             viewPager.setAdapter(adapter);
+            // 리스너를 달았다...
+            viewPager.addOnPageChangeListener(viewPagerListener);
+            // 페이지를 이동하고
             viewPager.setCurrentItem(position);
+            // 처음 한번 Presenter 에 해당되는 Fragment 의 musicInit 을 호출해서 음악을 초기화 해준다.
+            presenter.musicInit(position);
+        }
+
+        public void setDuration(int time){
+            String formatted = miliToString(time);
+            duration.setText( formatted );
+        }
+
+        // 시간 포맷 변경 Integer -> 00:00
+        private String miliToString(int mSecond){
+            long min = mSecond / 1000 / 60;
+            long sec = mSecond / 1000 % 60;
+
+            return String.format("%02d", min) + ":" + String.format("%02d", sec);
         }
 
         @Override
         public void onClick(View v) {
             switch(v.getId()){
                 case R.id.play:
-                    Uri musicUri = getDatas().get(position).musicUri;
-                    Player.play(musicUri , v.getContext());
-                    // seekBar 의 최대길이를 지정
-                    Log.d("DetailFragment","duration="+Player.getDuration());
-                    seekBar.setMax(Player.getDuration());
-
+                    Player.play();
                     // seekBar를 변경해주는 thread
                     new SeekBarThread(handler).start();
-
                     break;
                 case R.id.next:
                     break;
