@@ -21,8 +21,12 @@ import java.util.List;
 
 public class DetailFragment extends Fragment {
     public static final int CHANGE_SEEKBAR = 99;
+    public static final int STOP_THREAD = 98;
     static final String ARG1 = "position";
     private int position = -1;
+
+    // 음악 플레이에 따라 seekbar를 변경해주는 thread
+    SeekBarThread seekBarThread = null;
 
     private ViewHolder viewHolder = null;
 
@@ -32,6 +36,9 @@ public class DetailFragment extends Fragment {
             switch(msg.what){
                 case CHANGE_SEEKBAR:
                     viewHolder.setSeekBarPosition(msg.arg1);
+                    break;
+                case STOP_THREAD:
+                    seekBarThread.setRunFlag(false);
                     break;
             }
         }
@@ -98,15 +105,20 @@ public class DetailFragment extends Fragment {
         }
     };
 
+
+
     // 음악을 초기화해준다
     public void musicInit(int position){
         Uri musicUri = getDatas().get(position).musicUri;
-        Player.init(musicUri, getContext());
+        Player.init(musicUri, getContext(), handler);
 
         Log.d("DetailFragment","musicInit viewHolder====================================="+viewHolder);
         int musicDuration = Player.getDuration();
         viewHolder.setDuration(musicDuration);
         viewHolder.seekBar.setMax(Player.getDuration());
+
+        // seekBar를 변경해주는 thread
+        seekBarThread = new SeekBarThread(handler);
     }
 
     // ViewPager 의 View
@@ -141,6 +153,7 @@ public class DetailFragment extends Fragment {
         public void init(int position){
             setOnClickListener();
             setViewPager(position);
+            setSeekBar();
         }
 
         private void setOnClickListener(){
@@ -161,6 +174,27 @@ public class DetailFragment extends Fragment {
             presenter.musicInit(position);
         }
 
+        private void setSeekBar(){
+            seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                @Override
+                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                    // 사용자가 seekbar 를 터치했을 때만 동작하도록 설정
+                    if(fromUser)
+                        Player.setCurrent(progress);
+                }
+
+                @Override
+                public void onStartTrackingTouch(SeekBar seekBar) {
+
+                }
+
+                @Override
+                public void onStopTrackingTouch(SeekBar seekBar) {
+
+                }
+            });
+        }
+
         public void setDuration(int time){
             String formatted = miliToString(time);
             duration.setText( formatted );
@@ -178,15 +212,28 @@ public class DetailFragment extends Fragment {
         public void onClick(View v) {
             switch(v.getId()){
                 case R.id.play:
-                    Player.play();
-                    // seekBar를 변경해주는 thread
-                    new SeekBarThread(handler).start();
+                    play();
                     break;
                 case R.id.next:
+                    next();
                     break;
                 case R.id.prev:
+                    prev();
                     break;
             }
+        }
+
+        public void play(){
+            Player.play();
+            seekBarThread.start();
+        }
+
+        public void next(){
+            viewPager.setCurrentItem(viewPager.getCurrentItem()+1);
+        }
+
+        public void prev(){
+            viewPager.setCurrentItem(viewPager.getCurrentItem()-1);
         }
 
         public void setSeekBarPosition(int current){
@@ -221,11 +268,17 @@ class SeekBarThread extends Thread {
                 runFlag = false;
             }
 
+            Log.d("SeekBarThread", "current="+current+", duration="+Player.getDuration());
+
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
+    }
+
+    public void setRunFlag(boolean flag){
+        runFlag = flag;
     }
 }
