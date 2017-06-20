@@ -13,18 +13,11 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.veryworks.android.musicplayer.ListFragment.OnListFragmentInteractionListener;
 import com.veryworks.android.musicplayer.domain.Music;
-import com.veryworks.android.musicplayer.dummy.DummyContent.DummyItem;
 
 import java.util.List;
 
 import jp.wasabeef.glide.transformations.CropCircleTransformation;
 
-
-/**
- * {@link RecyclerView.Adapter} that can display a {@link DummyItem} and makes a call to the
- * specified {@link OnListFragmentInteractionListener}.
- * TODO: Replace the implementation with code for your data type.
- */
 public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
     private final OnListFragmentInteractionListener mListener;
 
@@ -138,12 +131,12 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
                 @Override
                 public void onClick(View v) {
                     switch(Player.status){
-                        case Player.PLAY:
+                        case Const.Player.PLAY:
                             Player.pause();
                             // pause 가 클릭되면 이미지 모양이 play 로 바뀐다.
                             btnPause.setImageResource(android.R.drawable.ic_media_play);
                             break;
-                        case Player.PAUSE:
+                        case Const.Player.PAUSE:
                             Player.replay();
                             btnPause.setImageResource(android.R.drawable.ic_media_pause);
                             break;

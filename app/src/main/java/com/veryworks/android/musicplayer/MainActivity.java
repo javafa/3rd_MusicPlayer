@@ -1,5 +1,6 @@
 package com.veryworks.android.musicplayer;
 
+import android.content.Intent;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -9,16 +10,24 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.FrameLayout;
 
+import com.veryworks.android.musicplayer.util.PermissionControl;
+
 public class MainActivity extends AppCompatActivity
-        implements ListFragment.OnListFragmentInteractionListener, PermissionControl.CallBack{
+        implements ListFragment.OnListFragmentInteractionListener
+        , DetailFragment.PlayerInterface
+        , PermissionControl.CallBack{
     FrameLayout layout;
     ListFragment list;
     DetailFragment detail;
+
+    Intent service;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        service = new Intent(this, PlayerService.class);
 
         // 볼륨 조절 버튼으로 미디어 음량만 조절하기 위한 설정
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
@@ -70,9 +79,29 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     protected void onDestroy() {
-
         detail.setDestroy();
-
         super.onDestroy();
+    }
+
+    @Override
+    public void initPlayer(){
+
+    }
+    @Override
+    public void playPlayer(){
+        // 1. 서비스를 생성하고
+        // 서비스에 명령어를 담아서 넘긴다
+        service.setAction(Const.Action.PLAY);
+        startService(service);
+    }
+    @Override
+    public void stopPlayer(){
+        service.setAction(Const.Action.STOP);
+        startService(service);
+    }
+    @Override
+    public void pausePlayer(){
+        service.setAction(Const.Action.PAUSE);
+        startService(service);
     }
 }

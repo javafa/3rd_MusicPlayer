@@ -34,6 +34,9 @@ public class DetailView implements View.OnClickListener{
     SeekBar seekBar;
     TextView current,duration;
 
+    // 플레이어를 컨트롤하는 메인에 있는 함수 사용
+    DetailFragment.PlayerInterface playerInterface;
+
     // 음악 플레이에 따라 seekbar를 변경해주는 thread
     SeekBarThread seekBarThread = null;
 
@@ -58,7 +61,8 @@ public class DetailView implements View.OnClickListener{
         return view;
     }
 
-    public DetailView(View view, DetailFragment presenter){
+    public DetailView(View view, DetailFragment presenter, DetailFragment.PlayerInterface playerInterface){
+        this.playerInterface = playerInterface;
         this.context = view.getContext();
         this.view = view;
         this.presenter = presenter;
@@ -155,17 +159,19 @@ public class DetailView implements View.OnClickListener{
     public void play(){
 
         switch(Player.status){
-            case Player.PLAY:
-                Player.pause();
+            case Const.Player.PLAY:
+//                Player.pause();
+                playerInterface.pausePlayer();
                 // pause 가 클릭되면 이미지 모양이 play 로 바뀐다.
                 btnPlay.setImageResource(android.R.drawable.ic_media_play);
                 break;
-            case Player.PAUSE:
-                Player.replay();
+            case Const.Player.PAUSE:
+//                Player.play();
+                playerInterface.playPlayer();
                 btnPlay.setImageResource(android.R.drawable.ic_media_pause);
                 break;
-            case Player.STOP:
-                Player.play();
+            case Const.Player.STOP:
+                playerInterface.playPlayer();
                 btnPlay.setImageResource(android.R.drawable.ic_media_pause);
                 break;
         }
@@ -217,8 +223,8 @@ public class DetailView implements View.OnClickListener{
 
         // 뷰페이저 이동시 음원을 초기화하는데
         // 이전 음원이 실행상태였으면 자동으로 실행시켜준다.
-        if(Player.status == Player.PLAY){
-            Player.play();
+        if(Player.status == Const.Player.PLAY){
+            playerInterface.playPlayer();
         }
     }
 

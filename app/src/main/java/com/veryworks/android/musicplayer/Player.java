@@ -11,11 +11,9 @@ import android.util.Log;
  */
 
 public class Player {
-    public static final int STOP = 0;
-    public static final int PLAY = 1;
-    public static final int PAUSE = 2;
+
     private static MediaPlayer player = null;
-    public static int status = STOP;
+    public static int status = Const.Player.STOP;
 
     /**
      * 음원을 세팅하는 함수
@@ -28,7 +26,7 @@ public class Player {
             player.release();
         }
         player = MediaPlayer.create(context, musicUri);
-        player.setLooping(false); // 반복여부
+        player.setLooping(true); // 일단 무한반복
         player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mp) {
@@ -43,17 +41,17 @@ public class Player {
 
     public static void play(){
         player.start();
-        status = PLAY;
+        status = Const.Player.PLAY;
     }
 
     public static void pause(){
         player.pause();
-        status = PAUSE;
+        status = Const.Player.PAUSE;
     }
 
     public static void replay(){
         player.start();
-        status = PLAY;
+        status = Const.Player.PLAY;
     }
 
     // 음원의 길이

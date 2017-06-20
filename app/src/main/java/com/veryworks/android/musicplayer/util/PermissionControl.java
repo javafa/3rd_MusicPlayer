@@ -1,4 +1,4 @@
-package com.veryworks.android.musicplayer;
+package com.veryworks.android.musicplayer.util;
 
 import android.Manifest;
 import android.annotation.TargetApi;
