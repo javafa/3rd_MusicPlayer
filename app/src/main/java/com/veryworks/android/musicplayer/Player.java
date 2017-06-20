@@ -16,7 +16,12 @@ public class Player {
     private static MediaPlayer player = null;
     public static int playerStatus = STOP;
 
-    // 음원 세팅
+    /**
+     * 음원을 세팅하는 함수
+     * @param musicUri
+     * @param context
+     * @param handler seekbar 를 조작하는 핸들러
+     */
     public static void init(Uri musicUri, Context context, final Handler handler) {
         if(player != null) {
             player.release();
@@ -35,7 +40,6 @@ public class Player {
     }
 
     public static void play(){
-
         player.start();
         playerStatus = PLAY;
     }
@@ -72,6 +76,4 @@ public class Player {
         if(player != null)
             player.seekTo(current);
     }
-
-
 }

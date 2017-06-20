@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
 
         list = ListFragment.newInstance(1);
-        detail = DetailFragment.newInstance(-1);
+        detail = DetailFragment.newInstance();
 
         PermissionControl.checkVersion(this);
     }
