@@ -73,12 +73,9 @@ public class Player {
                 return player.getCurrentPosition();
             }catch(Exception e){
                 Log.e("Player",e.toString());
-            }finally {
-                return 0;
             }
-        }else{
-            return 0;
         }
+        return 0;
     }
     // current 로 실행구간 이동시키기
     public static void setCurrent(int current){

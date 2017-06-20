@@ -76,6 +76,7 @@ public class DetailView implements View.OnClickListener{
         setOnClickListener();
         setViewPager(position);
         setSeekBar();
+        setSeekBarThread();
     }
 
     private void setOnClickListener(){
@@ -102,10 +103,6 @@ public class DetailView implements View.OnClickListener{
         viewPager.setCurrentItem(position);
         // 처음 한번 Presenter 에 해당되는 Fragment 의 musicInit 을 호출해서 음악을 초기화 해준다.
         // musicInit(position);
-
-        // seekBar를 변경해주는 thread
-        seekBarThread = new SeekBarThread(handler);
-        seekBarThread.start();
     }
 
     private void setSeekBar(){
@@ -127,6 +124,12 @@ public class DetailView implements View.OnClickListener{
 
             }
         });
+    }
+
+    private void setSeekBarThread(){
+        // seekBar를 변경해주는 thread
+        seekBarThread = new SeekBarThread(handler);
+        seekBarThread.start();
     }
 
     public void setDuration(int time){
@@ -211,6 +214,12 @@ public class DetailView implements View.OnClickListener{
         int musicDuration = Player.getDuration();
         setDuration(musicDuration);
         seekBar.setMax(Player.getDuration());
+
+        // 뷰페이저 이동시 음원을 초기화하는데
+        // 이전 음원이 실행상태였으면 자동으로 실행시켜준다.
+        if(Player.status == Player.PLAY){
+            Player.play();
+        }
     }
 
     public void setDestroy() {
