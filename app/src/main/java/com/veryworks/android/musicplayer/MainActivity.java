@@ -9,11 +9,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.FrameLayout;
 
 public class MainActivity extends AppCompatActivity
-        implements ListFragment.OnListFragmentInteractionListener
-                    , PermissionControl.CallBack{
-
+        implements ListFragment.OnListFragmentInteractionListener, PermissionControl.CallBack{
     FrameLayout layout;
-
     ListFragment list;
     DetailFragment detail;
 
@@ -27,8 +24,6 @@ public class MainActivity extends AppCompatActivity
         detail = DetailFragment.newInstance(-1);
     }
 
-
-
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -38,7 +33,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void init(){
         setViews();
-        setFragment(ListFragment.newInstance(1)); // 목록 프래그먼트
+        setFragment(list); // 목록 프래그먼트
     }
 
     private void setViews(){
