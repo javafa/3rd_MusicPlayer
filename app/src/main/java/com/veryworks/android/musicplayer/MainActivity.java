@@ -18,10 +18,11 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        PermissionControl.checkVersion(this);
 
         list = ListFragment.newInstance(1);
         detail = DetailFragment.newInstance(-1);
+
+        PermissionControl.checkVersion(this);
     }
 
     @Override
