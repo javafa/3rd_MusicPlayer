@@ -207,6 +207,7 @@ class SeekBarThread extends Thread {
     public void run(){
 
         while(runFlag) {
+
             // 매초마다 음원의 실행영역을 가져와서
             int current = Player.getCurrent();
             // seekbar 의 위치를 변경해준다.
