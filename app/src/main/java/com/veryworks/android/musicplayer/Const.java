@@ -10,6 +10,9 @@ public class Const {
         public static final String PAUSE = "com.veryworks.android.musicplayer.Action.pause";
         public static final String STOP = "com.veryworks.android.musicplayer.Action.stop";
         public static final String INIT = "com.veryworks.android.musicplayer.Action.init";
+
+        public static final String PREV = "com.veryworks.android.musicplayer.Action.prev";
+        public static final String NEXT = "com.veryworks.android.musicplayer.Action.next";
     }
 
     public class Player {
