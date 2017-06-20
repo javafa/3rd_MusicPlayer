@@ -46,4 +46,8 @@ public class DetailFragment extends Fragment {
         super.onStart();
         viewHolder.init(position);
     }
+
+    public void setDestroy() {
+        viewHolder.setDestroy();
+    }
 }

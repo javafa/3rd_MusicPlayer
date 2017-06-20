@@ -67,4 +67,12 @@ public class MainActivity extends AppCompatActivity
         detail.setPosition(position);
         addFragment(detail);
     }
+
+    @Override
+    protected void onDestroy() {
+
+        detail.setDestroy();
+
+        super.onDestroy();
+    }
 }

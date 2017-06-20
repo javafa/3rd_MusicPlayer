@@ -4,6 +4,7 @@ import android.content.Context;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Handler;
+import android.util.Log;
 
 /**
  * Created by pc on 6/16/2017.
@@ -14,7 +15,7 @@ public class Player {
     public static final int PLAY = 1;
     public static final int PAUSE = 2;
     private static MediaPlayer player = null;
-    public static int playerStatus = STOP;
+    public static int status = STOP;
 
     /**
      * 음원을 세팅하는 함수
@@ -37,21 +38,22 @@ public class Player {
                     handler.sendEmptyMessage(DetailFragment.STOP_THREAD);
             }
         });
+        Log.d("Player","init======="+player);
     }
 
     public static void play(){
         player.start();
-        playerStatus = PLAY;
+        status = PLAY;
     }
 
     public static void pause(){
         player.pause();
-        playerStatus = PAUSE;
+        status = PAUSE;
     }
 
     public static void replay(){
         player.start();
-        playerStatus = PLAY;
+        status = PLAY;
     }
 
     // 음원의 길이
@@ -65,8 +67,15 @@ public class Player {
 
     // 현재 실행 구간
     public static int getCurrent(){
+        Log.d("Player","getCurrent======="+player);
         if(player != null){
-            return player.getCurrentPosition();
+            try {
+                return player.getCurrentPosition();
+            }catch(Exception e){
+                Log.e("Player",e.toString());
+            }finally {
+                return 0;
+            }
         }else{
             return 0;
         }
